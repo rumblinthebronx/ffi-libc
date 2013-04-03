@@ -93,12 +93,16 @@ module FFI
       # stdin, stdout, stderr are not available on OSX
     end
 
-    attach_function :open, [:string, :int, :mode_t], :PIPE
-    attach_function :read, [:PIPE, :buffer_out, :size_t], :size_t
-    attach_function :write, [:PIPE, :buffer_in, :size_t], :size_t
-    attach_function :close, [:PIPE], :int
-    attach_function :splice [:PIPE, :pointer, :PIPE, :pointer, :size_t, :int], :int
-    attach_function :mkfifo, [:string, :mode_t], :int
+    begin
+      attach_function :open, [:string, :int, :mode_t], :PIPE
+      attach_function :read, [:PIPE, :buffer_out, :size_t], :size_t
+      attach_function :write, [:PIPE, :buffer_in, :size_t], :size_t
+      attach_function :close, [:PIPE], :int
+      attach_function :mkfifo, [:string, :mode_t], :int
+      attach_function :splice [:PIPE, :pointer, :PIPE, :pointer, :size_t, :int], :int
+      attach_function :vmsplice [:PIPE, :pointer, :ulong, :uint], :size_t
+    rescue  FFI::NotFoundError; end
+
     attach_function :fopen, [:string, :string], :FILE
     attach_function :fdopen, [:int, :string], :FILE
     attach_function :freopen, [:string, :string, :FILE], :FILE
