@@ -97,6 +97,7 @@ module FFI
     attach_function :read, [:PIPE, :buffer_out, :size_t], :size_t
     attach_function :write, [:PIPE, :buffer_in, :size_t], :size_t
     attach_function :close, [:PIPE], :int
+    attach_function :splice [:PIPE, :pointer, :PIPE, :pointer, :size_t, :int], :int
     attach_function :mkfifo, [:string, :mode_t], :int
     attach_function :fopen, [:string, :string], :FILE
     attach_function :fdopen, [:int, :string], :FILE
